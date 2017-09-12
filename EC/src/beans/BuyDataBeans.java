@@ -14,7 +14,16 @@ public class BuyDataBeans  implements Serializable {
 	private String deliveryMethodName;
 	private int deliveryMethodPrice;
 
-
+	public BuyDataBeans(int id, int totalPrice, Date buyDate, String deliveryMethodName, int userId) {
+		this.id = id;
+		this.totalPrice = totalPrice;
+		this.buyDate = buyDate;
+		this.deliveryMethodName = deliveryMethodName;
+		this.userId = userId;
+	}
+	public BuyDataBeans() {
+		// TODO 自動生成されたコンストラクター・スタブ
+	}
 	public int getId() {
 		return id;
 	}

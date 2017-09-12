@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import base.DBManager;
 import beans.BuyDataBeans;
@@ -90,6 +93,47 @@ public class BuyDAO {
 			System.out.println("searching BuyDataBeans by buyID has been completed");
 
 			return bdb;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new SQLException(e);
+		} finally {
+			if (con != null) {
+				con.close();
+			}
+		}
+	}
+
+	public static List<BuyDataBeans> getBuyDataBeansListByBuyId(int buyId) throws SQLException {
+		Connection con = null;
+		PreparedStatement st = null;
+		List<BuyDataBeans> bdbList = new ArrayList<BuyDataBeans>();
+		try {
+			con = DBManager.getConnection();
+
+			st = con.prepareStatement(
+					"SELECT * FROM t_buy"
+							+ " JOIN m_delivery_method"
+							+ " ON t_buy.delivery_method_id = m_delivery_method.id"
+			                + " WHERE t_buy.user_id = ?");
+			st.setInt(1, buyId);
+
+			ResultSet rs = st.executeQuery();
+
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				int total_price = rs.getInt("total_price");
+				Date buyDate = rs.getTimestamp("create_date");
+				String deliveryMethodName = rs.getString("name");
+				int userId = rs.getInt("user_id");
+
+				BuyDataBeans bdb = new BuyDataBeans(id,total_price,buyDate,deliveryMethodName,userId);
+				bdbList.add(bdb);
+			}
+
+			System.out.println("searching BuyDataBeans by buyID has been completed");
+
+			return bdbList;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			throw new SQLException(e);

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import base.DBManager;
 import beans.ItemDataBeans;
@@ -172,6 +173,50 @@ public class ItemDAO {
 		} finally {
 			if (con != null) {
 				con.close();
+			}
+		}
+	}
+
+	public  static List<ItemDataBeans> getItemByBuyId(int buyId){
+		Connection con = null;
+		PreparedStatement st = null;
+		List<ItemDataBeans> idbList = new ArrayList<ItemDataBeans>();
+		try {
+			con = DBManager.getConnection();
+
+			st = con.prepareStatement(
+					"SELECT name , price FROM t_buy_detail"
+							+ " JOIN m_item"
+							+ " ON t_buy_detail.item_id = m_item.id"
+			                + " WHERE buy_id = ?");
+			st.setInt(1, buyId);
+
+			ResultSet rs = st.executeQuery();
+
+
+			while (rs.next()) {
+				String name = rs.getString("name");
+				int price = rs.getInt("price");
+
+				ItemDataBeans idb = new ItemDataBeans(name,price);
+				idbList.add(idb);
+			}
+
+			System.out.println("searching BuyDataBeans by buyID has been completed");
+
+			return idbList;
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+
+		}finally {
+			if(con!=null) {
+				try {
+					con.close();
+				}catch(SQLException e) {
+					e.printStackTrace();
+					return null;
+				}
 			}
 		}
 	}

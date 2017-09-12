@@ -10,6 +10,13 @@ public class ItemDataBeans implements Serializable {
 	private String fileName;
 
 
+	public ItemDataBeans(String name, int price) {
+		this.name = name;
+		this.price = price;
+	}
+	public ItemDataBeans() {
+		// TODO 自動生成されたコンストラクター・スタブ
+	}
 	public int getId() {
 		return id;
 	}

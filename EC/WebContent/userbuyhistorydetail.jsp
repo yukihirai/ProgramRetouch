@@ -29,9 +29,11 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td class="center">1234年56月78日90時12分</td>
-									<td class="center">サンプル</td>
-									<td class="center">123456789円</td>
+								<%@page import="beans.BuyDataBeans" %>
+								<%BuyDataBeans bdb =(BuyDataBeans)request.getAttribute("bdb"); %>
+									<td class="center"><%=bdb.getFormatDate()%></td>
+									<td class="center"><%=bdb.getDeliveryMethodName()%></td>
+									<td class="center"><%=bdb.getTotalPrice()%>円</td>
 								</tr>
 							</tbody>
 						</table>
@@ -52,22 +54,15 @@
 								</tr>
 							</thead>
 							<tbody>
+							<%@page import="beans.ItemDataBeans"%>
+							<%@page import="java.util.List"%>
+							<%List<ItemDataBeans> idbList = (List<ItemDataBeans>)request.getAttribute("idb");%>
+							<%for(ItemDataBeans idb : idbList) {%>
 								<tr>
-									<td class="center">サンプル商品名1</td>
-									<td class="center">111111111円</td>
+									<td class="center"><%=idb.getName()%></td>
+									<td class="center"><%=idb.getPrice()%>円</td>
 								</tr>
-								<tr>
-									<td class="center">サンプル商品名2</td>
-									<td class="center">222222222円</td>
-								</tr>
-								<tr>
-									<td class="center">サンプル商品名3</td>
-									<td class="center">333333333円</td>
-								</tr>
-								<tr>
-									<td class="center">サンプル</td>
-									<td class="center">123456789円</td>
-								</tr>
+							<%} %>
 							</tbody>
 						</table>
 					</div>
